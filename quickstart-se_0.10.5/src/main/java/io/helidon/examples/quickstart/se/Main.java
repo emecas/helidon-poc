@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2019 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.util.logging.LogManager;
 
 import io.helidon.config.Config;
-import io.helidon.health.HealthSupport;
-import io.helidon.health.checks.HealthChecks;
-import io.helidon.metrics.MetricsSupport;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerConfiguration;
 import io.helidon.webserver.WebServer;
@@ -39,6 +36,18 @@ public final class Main {
     private Main() { }
 
     /**
+     * Creates new {@link Routing}.
+     *
+     * @return the new instance
+     */
+    private static Routing createRouting() {
+        return Routing.builder()
+                .register(JsonSupport.get())
+                .register("/greet", new GreetService())
+                .build();
+    }
+
+    /**
      * Application main entry point.
      * @param args command line arguments.
      * @throws IOException if there are problems reading logging properties
@@ -52,7 +61,7 @@ public final class Main {
      * @return the created {@link WebServer} instance
      * @throws IOException if there are problems reading logging properties
      */
-    static WebServer startServer() throws IOException {
+    protected static WebServer startServer() throws IOException {
 
         // load logging configuration
         LogManager.getLogManager().readConfiguration(
@@ -63,41 +72,20 @@ public final class Main {
 
         // Get webserver config from the "server" section of application.yaml
         ServerConfiguration serverConfig =
-                ServerConfiguration.create(config.get("server"));
+                ServerConfiguration.fromConfig(config.get("server"));
 
-        WebServer server = WebServer.create(serverConfig, createRouting(config));
+        WebServer server = WebServer.create(serverConfig, createRouting());
 
         // Start the server and print some info.
         server.start().thenAccept(ws -> {
             System.out.println(
-                    "WEB server is up! http://localhost:" + ws.port() + "/greet");
+                    "WEB server is up! http://localhost:" + ws.port());
         });
 
-        // Server threads are not daemon. NO need to block. Just react.
+        // Server threads are not demon. NO need to block. Just react.
         server.whenShutdown().thenRun(()
                 -> System.out.println("WEB server is DOWN. Good bye!"));
 
         return server;
     }
-
-    /**
-     * Creates new {@link Routing}.
-     *
-     * @return routing configured with JSON support, a health check, and a service
-     * @param config configuration of this server
-     */
-    private static Routing createRouting(Config config) {
-
-        HealthSupport health = HealthSupport.builder()
-                .add(HealthChecks.healthChecks())   // Adds a convenient set of checks
-                .build();
-
-        return Routing.builder()
-                .register(JsonSupport.create())
-                .register(health)                   // Health at "/health"
-                .register(MetricsSupport.create())  // Metrics at "/metrics"
-                .register("/greet", new GreetService(config))
-                .build();
-    }
-
 }
