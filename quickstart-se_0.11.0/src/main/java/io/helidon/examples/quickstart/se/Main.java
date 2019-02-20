@@ -22,11 +22,11 @@ import java.util.logging.LogManager;
 import io.helidon.config.Config;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
-import io.helidon.media.jsonp.server.JsonSupport;
 import io.helidon.metrics.MetricsSupport;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerConfiguration;
 import io.helidon.webserver.WebServer;
+import io.helidon.webserver.json.JsonSupport;
 
 /**
  * Simple Hello World rest application.
@@ -67,22 +67,15 @@ public final class Main {
 
         WebServer server = WebServer.create(serverConfig, createRouting(config));
 
-        // Try to start the server. If successful, print some info and arrange to
-        // print a message at shutdown. If unsuccessful, print the exception.
-        server.start()
-            .thenAccept(ws -> {
-                System.out.println(
-                        "WEB server is up! http://localhost:" + ws.port() + "/greet");
-                ws.whenShutdown().thenRun(()
-                    -> System.out.println("WEB server is DOWN. Good bye!"));
-                })
-            .exceptionally(t -> {
-                System.err.println("Startup failed: " + t.getMessage());
-                t.printStackTrace(System.err);
-                return null;
-            });
+        // Start the server and print some info.
+        server.start().thenAccept(ws -> {
+            System.out.println(
+                    "WEB server is up! http://localhost:" + ws.port() + "/greet");
+        });
 
-        // Server threads are not daemon. No need to block. Just react.
+        // Server threads are not daemon. NO need to block. Just react.
+        server.whenShutdown().thenRun(()
+                -> System.out.println("WEB server is DOWN. Good bye!"));
 
         return server;
     }
@@ -95,8 +88,6 @@ public final class Main {
      */
     private static Routing createRouting(Config config) {
 
-        MetricsSupport metrics = MetricsSupport.create();
-        GreetService greetService = new GreetService(config);
         HealthSupport health = HealthSupport.builder()
                 .add(HealthChecks.healthChecks())   // Adds a convenient set of checks
                 .build();
@@ -104,8 +95,8 @@ public final class Main {
         return Routing.builder()
                 .register(JsonSupport.create())
                 .register(health)                   // Health at "/health"
-                .register(metrics)                  // Metrics at "/metrics"
-                .register("/greet", greetService)
+                .register(MetricsSupport.create())  // Metrics at "/metrics"
+                .register("/greet", new GreetService(config))
                 .build();
     }
 

@@ -16,13 +16,9 @@
 
 package io.helidon.examples.quickstart.se;
 
-import java.util.Collections;
-
 import javax.json.Json;
-import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 
-import io.helidon.common.http.Http;
 import io.helidon.config.Config;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
@@ -39,7 +35,7 @@ import io.helidon.webserver.Service;
  * curl -X GET http://localhost:8080/greet/Joe
  *
  * Change greeting
- * curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Howdy"}' http://localhost:8080/greet/greeting
+ * curl -X PUT http://localhost:8080/greet/greeting/Hola
  *
  * The message is returned as a JSON object
  */
@@ -50,8 +46,6 @@ public class GreetService implements Service {
      * The config value for the key {@code greeting}.
      */
     private String greeting;
-
-    private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 
     GreetService(Config config) {
         this.greeting = config.get("app.greeting").asString().orElse("Ciao");
@@ -66,7 +60,7 @@ public class GreetService implements Service {
         rules
             .get("/", this::getDefaultMessageHandler)
             .get("/{name}", this::getMessageHandler)
-            .put("/greeting", this::updateGreetingHandler);
+            .put("/greeting/{greeting}", this::updateGreetingHandler);
     }
 
     /**
@@ -93,25 +87,10 @@ public class GreetService implements Service {
     private void sendResponse(ServerResponse response, String name) {
         String msg = String.format("%s %s!", greeting, name);
 
-        JsonObject returnObject = JSON.createObjectBuilder()
+        JsonObject returnObject = Json.createObjectBuilder()
                 .add("message", msg)
                 .build();
         response.send(returnObject);
-    }
-
-    private void updateGreetingFromJson(JsonObject jo, ServerResponse response) {
-
-        if (!jo.containsKey("greeting")) {
-            JsonObject jsonErrorObject = JSON.createObjectBuilder()
-                    .add("error", "No greeting provided")
-                    .build();
-            response.status(Http.Status.BAD_REQUEST_400)
-                    .send(jsonErrorObject);
-            return;
-        }
-
-        greeting = jo.getString("greeting");
-        response.status(Http.Status.NO_CONTENT_204).send();
     }
 
     /**
@@ -120,8 +99,13 @@ public class GreetService implements Service {
      * @param response the server response
      */
     private void updateGreetingHandler(ServerRequest request,
-                                       ServerResponse response) {
-        request.content().as(JsonObject.class).thenAccept(jo -> updateGreetingFromJson(jo, response));
+                                ServerResponse response) {
+        greeting = request.path().param("greeting");
+
+        JsonObject returnObject = Json.createObjectBuilder()
+                .add("greeting", greeting)
+                .build();
+        response.send(returnObject);
     }
 
 }

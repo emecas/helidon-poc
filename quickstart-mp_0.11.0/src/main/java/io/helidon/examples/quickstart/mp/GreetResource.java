@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2019 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,9 @@
 
 package io.helidon.examples.quickstart.mp;
 
-import java.util.Collections;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -30,7 +27,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * A simple JAX-RS resource to greet you. Examples:
@@ -42,15 +38,13 @@ import javax.ws.rs.core.Response;
  * curl -X GET http://localhost:8080/greet/Joe
  *
  * Change greeting
- * curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Howdy"}' http://localhost:8080/greet/greeting
+ * curl -X PUT http://localhost:8080/greet/greeting/Hola
  *
  * The message is returned as a JSON object.
  */
 @Path("/greet")
 @RequestScoped
 public class GreetResource {
-
-    private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 
     /**
      * The greeting message provider.
@@ -97,33 +91,26 @@ public class GreetResource {
     /**
      * Set the greeting to use in future messages.
      *
-     * @param jsonObject JSON containing the new greeting
-     * @return {@link Response}
+     * @param newGreeting the new greeting message
+     * @return {@link JsonObject}
      */
     @SuppressWarnings("checkstyle:designforextension")
-    @Path("/greeting")
+    @Path("/greeting/{greeting}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateGreeting(JsonObject jsonObject) {
-
-        if (!jsonObject.containsKey("greeting")) {
-            JsonObject entity = JSON.createObjectBuilder()
-                    .add("error", "No greeting provided")
-                    .build();
-            return Response.status(Response.Status.BAD_REQUEST).entity(entity).build();
-        }
-
-        String newGreeting = jsonObject.getString("greeting");
-
+    public JsonObject updateGreeting(@PathParam("greeting") String newGreeting) {
         greetingProvider.setMessage(newGreeting);
-        return Response.status(Response.Status.NO_CONTENT).build();
+
+        return Json.createObjectBuilder()
+                .add("greeting", newGreeting)
+                .build();
     }
 
     private JsonObject createResponse(String who) {
         String msg = String.format("%s %s!", greetingProvider.getMessage(), who);
 
-        return JSON.createObjectBuilder()
+        return Json.createObjectBuilder()
                 .add("message", msg)
                 .build();
     }
