@@ -20,34 +20,51 @@ mvn archetype:generate -DinteractiveMode=false \
 
 `cd quickstart-quickstart-se`
 
-`mvn package`
+## Build
 
+```
+mvn package
+```
 
-#### Run the Application
+## Start the application
 
-`java -jar target/quickstart-se.jar`
+```
+java -jar target/quickstart-se.jar
+```
 
+## Exercise the application
 
-#### Try the Application
+```
+curl -X GET http://localhost:8080/greet
+{"message":"Hello World!"}
 
-`curl -X GET http://localhost:8080/greet`
+curl -X GET http://localhost:8080/greet/Joe
+{"message":"Hello Joe!"}
 
-response: `{"message":"Hello World!"}`
+curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
 
+curl -X GET http://localhost:8080/greet/Jose
+{"message":"Hola Jose!"}
+```
 
-`curl -X GET http://localhost:8080/greet/Emecas`
+## Try health and metrics
 
-response: `{"message":"Hello Emecas!"}`
+```
+curl -s -X GET http://localhost:8080/health
+{"outcome":"UP",...
+. . .
 
+# Prometheus Format
+curl -s -X GET http://localhost:8080/metrics
+# TYPE base:gc_g1_young_generation_count gauge
+. . .
 
-`curl -X PUT http://localhost:8080/greet/greeting/Hola`
+# JSON Format
+curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
+{"base":...
+. . .
 
-response: `{"greeting":"Hola"}`
-
-
-`curl -X GET http://localhost:8080/greet/Gato`
-
-response: `{"message":"Hola Gato!"}`
+```
 
 
 
@@ -70,31 +87,48 @@ mvn archetype:generate -DinteractiveMode=false \
 
 `cd quickstart-quickstart-mp`
 
-`mvn package`
+## Build
 
+```
+mvn package
+```
 
-#### Run the Application
+## Start the application
 
-`java -jar target/quickstart-mp.jar`
+```
+java -jar target/quickstart-mp.jar
+```
 
+## Exercise the application
 
-#### Try the Application
+```
+curl -X GET http://localhost:8080/greet
+{"message":"Hello World!"}
 
-`curl -X GET http://localhost:8080/greet`
+curl -X GET http://localhost:8080/greet/Joe
+{"message":"Hello Joe!"}
 
-response: `{"message":"Hello World!"}`
+curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
 
+curl -X GET http://localhost:8080/greet/Jose
+{"message":"Hola Jose!"}
+```
 
-`curl -X GET http://localhost:8080/greet/Emecas`
+## Try health and metrics
 
-response: `{"message":"Hello Emecas!"}`
+```
+curl -s -X GET http://localhost:8080/health
+{"outcome":"UP",...
+. . .
 
+# Prometheus Format
+curl -s -X GET http://localhost:8080/metrics
+# TYPE base:gc_g1_young_generation_count gauge
+. . .
 
-`curl -X PUT http://localhost:8080/greet/greeting/Hola`
+# JSON Format
+curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
+{"base":...
+. . .
 
-response: `{"greeting":"Hola"}`
-
-
-`curl -X GET http://localhost:8080/greet/Gato`
-
-response: `{"message":"Hola Gato!"}`
+```
