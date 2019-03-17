@@ -10,7 +10,7 @@ The Helidon SE example implements the REST service using the Helidon WebServer c
 mvn archetype:generate -DinteractiveMode=false \
 -DarchetypeGroupId=io.helidon.archetypes \
 -DarchetypeArtifactId=helidon-quickstart-se \
--DarchetypeVersion=1.0.0 \
+-DarchetypeVersion=1.0.1 \
 -DgroupId=io.helidon.examples \
 -DartifactId=quickstart-se \
 -Dpackage=io.helidon.examples.quickstart.se
@@ -78,7 +78,7 @@ The Helidon MP example implements the REST service using the JAX-RS support prov
 mvn archetype:generate -DinteractiveMode=false \
     -DarchetypeGroupId=io.helidon.archetypes \
     -DarchetypeArtifactId=helidon-quickstart-mp \
-    -DarchetypeVersion=1.0.0 \
+    -DarchetypeVersion=1.0.1 \
     -DgroupId=io.helidon.examples \
     -DartifactId=quickstart-mp \
     -Dpackage=io.helidon.examples.quickstart.mp
