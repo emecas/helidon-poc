@@ -28,7 +28,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <helidon.version>1.1.2</helidon.version>
+        <helidon.version>1.2.0</helidon.version>
         <mainClass>io.helidon.examples.quickstart.mp.Main</mainClass>
         <exec.mainClass>${mainClass}</exec.mainClass>
         <maven.compiler.source>8</maven.compiler.source>
@@ -48,7 +48,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.8.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jboss.jandex</groupId>
@@ -171,7 +171,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-json-binding</artifactId>
-                <version>2.26</version>
+                <version>2.29</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -179,7 +179,7 @@
     <dependencies>
         <dependency>
             <groupId>io.helidon.microprofile.bundles</groupId>
-            <artifactId>helidon-microprofile-1.2</artifactId>
+            <artifactId>helidon-microprofile-2.2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
