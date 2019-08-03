@@ -15,9 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,10 +26,10 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <helidon.version>1.1.0</helidon.version>
-        <helidon.plugin.version>1.0.10</helidon.plugin.version>
+        <helidon.version>1.0.3</helidon.version>
+        <!-- Default package. Will be overriden by Maven archetype -->
+        <package>io.helidon.examples.quickstart.se</package>
         <mainClass>io.helidon.examples.quickstart.se.Main</mainClass>
-        <exec.mainClass>${mainClass}</exec.mainClass>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <libs.classpath.prefix>libs</libs.classpath.prefix>
@@ -82,15 +80,9 @@
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>${libs.classpath.prefix}</classpathPrefix>
                                 <mainClass>${mainClass}</mainClass>
-                                <useUniqueVersions>false</useUniqueVersions>
                             </manifest>
                         </archive>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>io.helidon.build-tools</groupId>
-                    <artifactId>helidon-maven-plugin</artifactId>
-                    <version>${helidon.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -114,6 +106,38 @@
                             <overWriteIfNewer>true</overWriteIfNewer>
                             <includeScope>runtime</includeScope>
                             <excludeScope>test</excludeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dockerfile</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <filtering>true</filtering>
+                                    <directory>src/main/docker</directory>
+                                    <includes>
+                                        <include>Dockerfile</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <filtering>true</filtering>
+                                    <directory>src/main/k8s</directory>
+                                    <includes>
+                                        <include>app.yaml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
@@ -175,31 +199,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>native-image</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.helidon.build-tools</groupId>
-                        <artifactId>helidon-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>native-image</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <dependencies>
-                <dependency>
-                    <groupId>io.helidon.integrations.graal</groupId>
-                    <artifactId>helidon-graal-native-image-extension</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 </project>
