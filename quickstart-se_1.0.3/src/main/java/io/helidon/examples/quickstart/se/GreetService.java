@@ -17,7 +17,6 @@
 package io.helidon.examples.quickstart.se;
 
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
@@ -50,12 +49,12 @@ public class GreetService implements Service {
     /**
      * The config value for the key {@code greeting}.
      */
-    private final AtomicReference<String> greeting = new AtomicReference<>();
+    private String greeting;
 
     private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 
     GreetService(Config config) {
-        greeting.set(config.get("app.greeting").asString().orElse("Ciao"));
+        this.greeting = config.get("app.greeting").asString().orElse("Ciao");
     }
 
     /**
@@ -92,7 +91,7 @@ public class GreetService implements Service {
     }
 
     private void sendResponse(ServerResponse response, String name) {
-        String msg = String.format("%s %s!", greeting.get(), name);
+        String msg = String.format("%s %s!", greeting, name);
 
         JsonObject returnObject = JSON.createObjectBuilder()
                 .add("message", msg)
@@ -111,7 +110,7 @@ public class GreetService implements Service {
             return;
         }
 
-        greeting.set(jo.getString("greeting"));
+        greeting = jo.getString("greeting");
         response.status(Http.Status.NO_CONTENT_204).send();
     }
 
