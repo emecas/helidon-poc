@@ -10,14 +10,14 @@ The Helidon SE example implements the REST service using the Helidon WebServer c
 mvn archetype:generate -DinteractiveMode=false \
     -DarchetypeGroupId=io.helidon.archetypes \
     -DarchetypeArtifactId=helidon-quickstart-se \
-    -DarchetypeVersion=1.1.0 \
+    -DarchetypeVersion=1.1.1 \
     -DgroupId=io.helidon.examples \
     -DartifactId=quickstart-se \
     -Dpackage=io.helidon.examples.quickstart.se
 
 #### Build the Application
 
-`cd quickstart-quickstart-se`
+`cd quickstart-se`
 
 ## Build
 
