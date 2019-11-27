@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2018, 2019 Oracle and/or its affiliates. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #
 
 # 1st stage, build the app
-FROM helidon/jdk8-graalvm-maven:19.2.0 as build
+FROM maven:3.5.4-jdk-9 as build
 
 WORKDIR /helidon
 
@@ -23,22 +23,23 @@ WORKDIR /helidon
 # Incremental docker builds will always resume after that, unless you update
 # the pom
 ADD pom.xml .
-RUN mvn package -Pnative-image -Dnative.image.skip -DskipTests
+RUN mvn package -DskipTests
 
 # Do the Maven build!
 # Incremental docker builds will resume here when you change sources
 ADD src src
-RUN mvn package -Pnative-image -Dnative.image.buildStatic -DskipTests
+RUN mvn package -DskipTests
 
 RUN echo "done!"
 
 # 2nd stage, build the runtime image
-FROM scratch
+FROM openjdk:8-jre-slim
 WORKDIR /helidon
 
 # Copy the binary built in the 1st stage
-COPY --from=build /helidon/target/quickstart-se .
+COPY --from=build /helidon/target/quickstart-se.jar ./
+COPY --from=build /helidon/target/libs ./libs
 
-ENTRYPOINT ["./quickstart-se"]
+CMD ["java", "-jar", "quickstart-se.jar"]
 
 EXPOSE 8080
