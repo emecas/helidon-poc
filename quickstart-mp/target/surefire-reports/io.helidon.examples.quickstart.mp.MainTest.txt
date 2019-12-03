@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: io.helidon.examples.quickstart.mp.MainTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.343 sec - in io.helidon.examples.quickstart.mp.MainTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.335 sec <<< FAILURE! - in io.helidon.examples.quickstart.mp.MainTest
+io.helidon.examples.quickstart.mp.MainTest  Time elapsed: 0.334 sec  <<< ERROR!
+io.helidon.config.ConfigException: Cannot load data from mandatory source UrlConfig[file:/C:/Users/ecastaneda1/repos/GITLAB/PERSONAL/helidon-poc/quickstart-mp/target/test-classes/META-INF/microprofile-config.properties]. Configuration at url 'file:/C:/Users/ecastaneda1/repos/GITLAB/PERSONAL/helidon-poc/quickstart-mp/target/test-classes/META-INF/microprofile-config.properties' GET is not accessible.
+	at io.helidon.examples.quickstart.mp.MainTest.startTheServer(MainTest.java:39)
+Caused by: io.helidon.config.ConfigException: Configuration at url 'file:/C:/Users/ecastaneda1/repos/GITLAB/PERSONAL/helidon-poc/quickstart-mp/target/test-classes/META-INF/microprofile-config.properties' GET is not accessible.
+	at io.helidon.examples.quickstart.mp.MainTest.startTheServer(MainTest.java:39)
+Caused by: java.nio.file.InvalidPathException: Illegal char <:> at index 2: /C:/Users/ecastaneda1/repos/GITLAB/PERSONAL/helidon-poc/quickstart-mp/target/test-classes/META-INF/microprofile-config.properties
+	at io.helidon.examples.quickstart.mp.MainTest.startTheServer(MainTest.java:39)
+
