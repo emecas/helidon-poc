@@ -77,7 +77,7 @@ The Helidon MP example implements the REST service using the JAX-RS support prov
 mvn archetype:generate -DinteractiveMode=false \
     -DarchetypeGroupId=io.helidon.archetypes \
     -DarchetypeArtifactId=helidon-quickstart-mp \
-    -DarchetypeVersion=1.3.0 \
+    -DarchetypeVersion=1.3.1 \
     -DgroupId=io.helidon.examples \
     -DartifactId=quickstart-mp \
     -Dpackage=io.helidon.examples.quickstart.mp
