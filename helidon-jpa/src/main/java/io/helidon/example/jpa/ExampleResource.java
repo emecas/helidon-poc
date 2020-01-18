@@ -8,6 +8,9 @@ import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import javax.transaction.Transactional;
+import javax.ws.rs.PathParam;
+
 /**
  * Simple JAXRS resource class.
  */
@@ -18,10 +21,29 @@ public class ExampleResource {
     @PersistenceContext 
     private EntityManager em;
 
+    
+    @GET
+    @Path("response/{salutation}")
+    @Produces("text/plain")
+    @Transactional 
+    public String getResponse(@PathParam("salutation") String salutation) {
+        final Greeting greeting = this.em.find(Greeting.class, salutation);
+        final String returnValue;
+        if (greeting == null) {
+            returnValue = null;
+        } else {
+            returnValue = greeting.getResponse();
+        }
+        return returnValue;
+    }
+    
     @Produces("text/plain")
     @Path("/")
     @GET
     public String get() {
         return "It works!";
     }
+
+
+
 }
