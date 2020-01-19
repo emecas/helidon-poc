@@ -1,7 +1,6 @@
 Use the Maven Archetype to Generate a Helidon MP Application
 
-In a shell, cd into an empty directory and run this:
-
+```
 mvn archetype:generate \
     -DinteractiveMode=false \
     -DarchetypeGroupId=io.helidon.archetypes \
@@ -12,5 +11,17 @@ mvn archetype:generate \
     -Dpackage=io.helidon.example.jpa \
     -DrestResourceName=ExampleResource \
     -DapplicationName=ExampleApplication
+```
 
- 
+Update [\pom.xml] file  by adding these 7  dependencies: 
+
+1. JDBC Database Driver
+2. Connection Pool Extension
+3. JTA Extension
+4. Provider-Independent Helidon JPA Extension 
+5. EclipseLink JPA Extension
+6. JTA Dependency
+7. JPA Dependency
+
+and the Static Weaving maven plugin:
+
