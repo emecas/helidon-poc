@@ -93,6 +93,18 @@ and the Static Weaving maven plugin:
 2. Add annotations and EntityManager field.
 3. Add resource method
 
+
+### Add a DDL script to Create/Load Database Tables under ```src/main/resources/``` folder: 
+
+```
+CREATE TABLE IF NOT EXISTS GREETING (
+    SALUTATION VARCHAR(64) NOT NULL PRIMARY KEY,
+    RESPONSE VARCHAR(64) NOT NULL
+);
+
+MERGE INTO GREETING (SALUTATION, RESPONSE) VALUES ('Marco', 'Polo');
+```
+
 ### Add Logging configuration ```src/main/resources/logging.properties```
 
 
