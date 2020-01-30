@@ -13,13 +13,12 @@ RUN ["strip", "-p", "--strip-unneeded", "/var/tmp/myjre/lib/server/libjvm.so"]
 # End work-around
 
 # Stage 2: Build application image using JRE from Stage 1 
-FROM debian:sid-slim
+FROM debian:sid-slim 
 COPY --from=myjre /var/tmp/myjre /opt/jre 
 ENV PATH=$PATH:/opt/jre/bin
 
 RUN mkdir /app
-COPY ./target/libs /app/libs
-#COPY ${project.artifactId}.jar /app
-COPY ./target/mp-java-packaging.jar /app
+COPY libs /app/libs
+COPY ${project.artifactId}.jar /app
 
 CMD ["java", "-jar", "/app/${project.artifactId}.jar"]
