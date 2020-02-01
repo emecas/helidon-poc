@@ -138,3 +138,24 @@ curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
 ## 3. Helidon MP JPA (./helidon-jpa)
 
 Adapted from the guide `Using JPA in Helidon MP` available [here](https://helidon.io/docs/latest/index.html#/guides/24_jpa)
+
+
+
+## 4. Java Packaging MP (./mp-java-packaging)
+
+Adapted from the guide `Creating Docker Images` available [here](https://helidon.io/docs/latest/#/guides/30_dockerfile)
+
+```
+export JAVA_HOME=/usr/lib/jvm/default-java
+```
+
+
+```
+mvn archetype:generate -DinteractiveMode=false \
+    -DarchetypeGroupId=io.helidon.archetypes \
+    -DarchetypeArtifactId=helidon-quickstart-mp \
+    -DarchetypeVersion=1.4.1 \
+    -DgroupId=io.helidon.examples \
+    -DartifactId=mp-java-packaging \
+    -Dpackage=io.helidon.mp.javapackaging
+```
