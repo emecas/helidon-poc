@@ -3,6 +3,7 @@
 
 ## Helidon MP Example (./helidon-quickstart-mp)
 
+https://mvnrepository.com/artifact/io.helidon.archetypes/helidon-quickstart-mp/2.0.0-M1
 
 ```
 mvn archetype:generate -DinteractiveMode=false \
@@ -12,4 +13,19 @@ mvn archetype:generate -DinteractiveMode=false \
     -DgroupId=io.helidon.examples \
     -DartifactId=helidon-quickstart-mp \
     -Dpackage=io.helidon.examples.quickstart.mp
+```
+**
+
+## Helidon SE Example (./helidon-quickstart-se)
+
+https://mvnrepository.com/artifact/io.helidon.archetypes/helidon-quickstart-se/2.0.0-M1
+
+```
+mvn archetype:generate -DinteractiveMode=false \
+    -DarchetypeGroupId=io.helidon.archetypes \
+    -DarchetypeArtifactId=helidon-quickstart-se \
+    -DarchetypeVersion=2.0.0-M1 \
+    -DgroupId=io.helidon.examples \
+    -DartifactId=helidon-quickstart-se \
+    -Dpackage=io.helidon.examples.quickstart.se
 ```
