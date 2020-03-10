@@ -6,11 +6,10 @@
 The Helidon SE example implements the REST service using the Helidon WebServer component directly. It shows the basics of configuring the WebServer and implementing basic routing rules. 
 
 #### Generate The Project
-
 mvn archetype:generate -DinteractiveMode=false \
     -DarchetypeGroupId=io.helidon.archetypes \
     -DarchetypeArtifactId=helidon-quickstart-se \
-    -DarchetypeVersion=1.4.1 \
+    -DarchetypeVersion=1.4.2 \
     -DgroupId=io.helidon.examples \
     -DartifactId=quickstart-se \
     -Dpackage=io.helidon.examples.quickstart.se
