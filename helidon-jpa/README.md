@@ -5,7 +5,7 @@ mvn archetype:generate \
     -DinteractiveMode=false \
     -DarchetypeGroupId=io.helidon.archetypes \
     -DarchetypeArtifactId=helidon-mp \
-    -DarchetypeVersion=1.4.1 \
+    -DarchetypeVersion=1.4.4 \
     -DgroupId=io.helidon.example \
     -DartifactId=helidon-jpa \
     -Dpackage=io.helidon.example.jpa \
