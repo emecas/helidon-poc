@@ -158,3 +158,12 @@ mvn archetype:generate -DinteractiveMode=false \
     -DartifactId=mp-java-packaging \
     -Dpackage=io.helidon.mp.javapackaging
 ```
+
+
+## 4. Helidon CLI (Devloop)
+
+Ref: https://medium.com/helidon/introducing-the-helidon-cli-95c1e22d8fdb
+
+    https://github.com/oracle/helidon-build-tools/releases/tag/2.0.0-cli-preview     
+    https://www.graalvm.org/     
+    https://www.youtube.com/watch?v=yzQDI1k3w_
